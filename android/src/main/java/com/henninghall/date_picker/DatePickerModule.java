@@ -3,6 +3,7 @@ package com.henninghall.date_picker;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,17 +49,17 @@ public class DatePickerModule extends ReactContextBaseJavaModule {
         final String cancelText = props.getString("cancelText");
         final View pickerWithMargin = withTopMargin(picker);
 
-        return new AlertDialog.Builder(DatePickerPackage.context.getCurrentActivity())
-                .setTitle(title)
+        AlertDialog dialog = new AlertDialog.Builder(DatePickerPackage.context.getCurrentActivity())
+                .setTitle(Html.fromHtml(("<font color='#0000'>"+title+"</font>")))
                 .setCancelable(true)
                 .setView(pickerWithMargin)
-                .setPositiveButton(confirmText, new DialogInterface.OnClickListener() {
+                .setPositiveButton(Html.fromHtml(("<font color='#0000'>"+confirmText+"</font>")), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onConfirm.invoke(picker.getDate());
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(cancelText, new DialogInterface.OnClickListener() {
+                .setNegativeButton(Html.fromHtml(("<font color='#0000'>"+cancelText+"</font>")), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         onCancel.invoke();
                         dialog.dismiss();
@@ -71,6 +72,8 @@ public class DatePickerModule extends ReactContextBaseJavaModule {
                     }
                 })
                 .create();
+
+                return dialog;
     }
 
     private PickerView createPicker(ReadableMap props){
